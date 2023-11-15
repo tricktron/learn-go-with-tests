@@ -37,12 +37,18 @@
         let pkgs = nixpkgs.legacyPackages.${system};
         in
         {
-            default = pkgs.buildGoModule
+            default = pkgs.buildGoModule rec
             {
-                pname        = "hello-world";
+                nativeBuildInputs  = with pkgs; [ golangci-lint ];
+                pname        = "learn-go-with-tests";
                 version      = "1.0.0";
-                src          = ./hello-world;
+                src          = ./.;
                 vendorSha256 = null;
+                preCheck     = 
+                ''
+                    HOME=$TMPDIR
+                    golangci-lint run --enable-all
+                '';
             };
         });
 
