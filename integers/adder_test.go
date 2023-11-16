@@ -1,8 +1,9 @@
 package integers_test
 
 import (
-	"learn-go-with-tests/integers"
 	"testing"
+
+	"learn-go-with-tests/integers"
 )
 
 func TestAdder(t *testing.T) {
