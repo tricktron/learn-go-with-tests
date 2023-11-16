@@ -37,7 +37,7 @@
         let pkgs = nixpkgs.legacyPackages.${system};
         in
         {
-            default = pkgs.buildGoModule rec
+            default = pkgs.buildGoModule
             {
                 nativeBuildInputs  = with pkgs; [ golangci-lint ];
                 pname        = "learn-go-with-tests";
