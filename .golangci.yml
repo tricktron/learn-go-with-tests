@@ -11,3 +11,13 @@ linters:
     - structcheck
     - scopelint
     - varcheck
+
+linters-settings:
+  gofumpt:
+    #module-path: "learn-go-with-tests"
+  depguard:
+    rules:
+      main:
+        allow:
+          - $gostd
+          - learn-go-with-tests
