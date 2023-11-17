@@ -1,6 +1,7 @@
 package iteration_test
 
 import (
+	"fmt"
 	"testing"
 
 	"learn-go-with-tests/iteration"
@@ -21,4 +22,10 @@ func BenchmarkRepeat(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		iteration.Repeat("a", 5)
 	}
+}
+
+func ExampleRepeat() {
+	repeated := iteration.Repeat("x", 3)
+	fmt.Println(repeated)
+	// Output: xxx
 }
