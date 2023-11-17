@@ -9,7 +9,7 @@ import (
 func TestSum(t *testing.T) {
 	t.Parallel()
 
-	t.Run("Should calculate sum of an array with size 5", func(t *testing.T) {
+	t.Run("Should calculate sum of non-empty array", func(t *testing.T) {
 		t.Parallel()
 
 		numbers := []int{1, 2, 3, 4, 5}
@@ -22,13 +22,13 @@ func TestSum(t *testing.T) {
 		}
 	})
 
-	t.Run("Should calculate sum of an array with size 4", func(t *testing.T) {
+	t.Run("Should return 0 sum for empty array", func(t *testing.T) {
 		t.Parallel()
 
-		numbers := []int{1, 2, 3, 4}
+		numbers := []int{}
 
 		got := array.Sum(numbers)
-		want := 10
+		want := 0
 
 		if got != want {
 			t.Errorf("got %d want %d given %v", got, want, numbers)
