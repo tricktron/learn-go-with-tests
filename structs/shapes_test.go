@@ -21,28 +21,18 @@ func TestPerimeter(t *testing.T) {
 func TestArea(t *testing.T) {
 	t.Parallel()
 
-	assertAreaEquals := func(tb testing.TB, s structs.Shape, want float64) {
-		tb.Helper()
-
-		got := s.Area()
-		if got != want {
-			t.Errorf("got %g want %g", got, want)
-		}
+	areaTests := []struct {
+		shape structs.Shape
+		want  float64
+	}{
+		{structs.Rectangle{5.0, 7.0}, 35.0},
+		{structs.Circle{10}, 314.1592653589793},
 	}
 
-	t.Run("Should calculate area of rectangles", func(t *testing.T) {
-		t.Parallel()
-
-		rectangle := structs.Rectangle{5.0, 7.0}
-
-		assertAreaEquals(t, rectangle, 35.0)
-	})
-
-	t.Run("Should calculate area of circles", func(t *testing.T) {
-		t.Parallel()
-
-		circle := structs.Circle{10}
-
-		assertAreaEquals(t, circle, 314.1592653589793)
-	})
+	for _, tt := range areaTests {
+		got := tt.shape.Area()
+		if got != tt.want {
+			t.Errorf("got %g want %g", got, tt.want)
+		}
+	}
 }
