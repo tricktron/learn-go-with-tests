@@ -9,7 +9,8 @@ import (
 func TestPerimeter(t *testing.T) {
 	t.Parallel()
 
-	got := structs.Perimeter(10.0, 10.0)
+	rectangle := structs.Rectangle{10.0, 10.0}
+	got := structs.Perimeter(rectangle)
 	want := 40.0
 
 	if got != want {
@@ -20,7 +21,8 @@ func TestPerimeter(t *testing.T) {
 func TestArea(t *testing.T) {
 	t.Parallel()
 
-	got := structs.Area(5.0, 7.0)
+	rectangle := structs.Rectangle{5.0, 7.0}
+	got := structs.Area(rectangle)
 	want := 35.0
 
 	if got != want {
