@@ -25,9 +25,9 @@ func TestArea(t *testing.T) {
 		shape structs.Shape
 		want  float64
 	}{
-		{structs.Rectangle{5, 7}, 35.0},
-		{structs.Circle{10}, 314.1592653589793},
-		{structs.Triangle{12, 6}, 36.0},
+		{shape: structs.Rectangle{Width: 5, Height: 7}, want: 35.0},
+		{shape: structs.Circle{Radius: 10}, want: 314.1592653589793},
+		{shape: structs.Triangle{Base: 12, Height: 6}, want: 36.0},
 	}
 
 	for _, tt := range areaTests {
