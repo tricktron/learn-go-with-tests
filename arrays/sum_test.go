@@ -73,6 +73,20 @@ func TestSumAll(t *testing.T) {
 func TestSumAllTails(t *testing.T) {
 	t.Parallel()
 
+	t.Run("Should calculate and return slices tail sum of empty slice",
+		func(t *testing.T) {
+			t.Parallel()
+
+			emptySlice := []int{}
+
+			got := array.SumAllTails(emptySlice)
+			want := []int{0}
+
+			if !reflect.DeepEqual(got, want) {
+				t.Errorf("got %v want %v", got, want)
+			}
+		})
+
 	t.Run("Should calculate and return slices tail sum of single slice",
 		func(t *testing.T) {
 			t.Parallel()

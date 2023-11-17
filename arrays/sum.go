@@ -24,7 +24,11 @@ func SumAllTails(slices ...[]int) []int {
 	sumSlice := make([]int, 0, len(slices))
 
 	for _, slice := range slices {
-		sumSlice = append(sumSlice, Sum(slice[1:]))
+		if len(slice) == 0 {
+			sumSlice = append(sumSlice, 0)
+		} else {
+			sumSlice = append(sumSlice, Sum(slice[1:]))
+		}
 	}
 
 	return sumSlice
