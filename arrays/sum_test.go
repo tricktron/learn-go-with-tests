@@ -53,4 +53,19 @@ func TestSumAll(t *testing.T) {
 				t.Errorf("got %v want %v", got, want)
 			}
 		})
+
+	t.Run("Should calculate and return slices sum of multiple slices",
+		func(t *testing.T) {
+			t.Parallel()
+
+			slice1 := []int{1, 2}
+			slice2 := []int{41, 1}
+
+			got := array.SumAll(slice1, slice2)
+			want := []int{3, 42}
+
+			if !reflect.DeepEqual(got, want) {
+				t.Errorf("got %v want %v", got, want)
+			}
+		})
 }
