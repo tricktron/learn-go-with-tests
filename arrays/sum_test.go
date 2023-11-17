@@ -49,9 +49,7 @@ func TestSumAll(t *testing.T) {
 			got := array.SumAll(slice1)
 			want := []int{15}
 
-			if !reflect.DeepEqual(got, want) {
-				t.Errorf("got %v want %v", got, want)
-			}
+			assertSlicesEqual(t, got, want)
 		})
 
 	t.Run("Should calculate and return slices sum of multiple slices",
@@ -64,9 +62,7 @@ func TestSumAll(t *testing.T) {
 			got := array.SumAll(slice1, slice2)
 			want := []int{3, 42}
 
-			if !reflect.DeepEqual(got, want) {
-				t.Errorf("got %v want %v", got, want)
-			}
+			assertSlicesEqual(t, got, want)
 		})
 }
 
@@ -82,9 +78,7 @@ func TestSumAllTails(t *testing.T) {
 			got := array.SumAllTails(emptySlice)
 			want := []int{0}
 
-			if !reflect.DeepEqual(got, want) {
-				t.Errorf("got %v want %v", got, want)
-			}
+			assertSlicesEqual(t, got, want)
 		})
 
 	t.Run("Should calculate and return slices tail sum of single slice",
@@ -96,9 +90,7 @@ func TestSumAllTails(t *testing.T) {
 			got := array.SumAllTails(slice1)
 			want := []int{14}
 
-			if !reflect.DeepEqual(got, want) {
-				t.Errorf("got %v want %v", got, want)
-			}
+			assertSlicesEqual(t, got, want)
 		})
 
 	t.Run("Should calculate and return slices tail sum of multiple slices",
@@ -111,8 +103,14 @@ func TestSumAllTails(t *testing.T) {
 			got := array.SumAllTails(slice1, slice2)
 			want := []int{2, 1}
 
-			if !reflect.DeepEqual(got, want) {
-				t.Errorf("got %v want %v", got, want)
-			}
+			assertSlicesEqual(t, got, want)
 		})
+}
+
+func assertSlicesEqual(tb testing.TB, got []int, want []int) {
+	tb.Helper()
+
+	if !reflect.DeepEqual(got, want) {
+		tb.Errorf("got %v want %v", got, want)
+	}
 }
