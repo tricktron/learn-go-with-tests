@@ -18,10 +18,19 @@ func TestRepeat(t *testing.T) {
 	}
 }
 
+var result string //nolint: gochecknoglobals
+
 func BenchmarkRepeat(b *testing.B) {
+	var repeated string
 	for i := 0; i < b.N; i++ {
-		iteration.Repeat("a", 5)
+		// always record the result to prevent the compiler eliminating the
+		// function call
+		repeated = iteration.Repeat("a", 5)
 	}
+
+	// always store the result to a package level variable so that the compiler
+	// cannot eliminate the benchmark itself
+	result = repeated
 }
 
 func ExampleRepeat() {
