@@ -19,3 +19,13 @@ func SumAll(slices ...[]int) []int {
 
 	return sumSlice
 }
+
+func SumAllTails(slices ...[]int) []int {
+	sumSlice := make([]int, 0, len(slices))
+
+	for _, slice := range slices {
+		sumSlice = append(sumSlice, Sum(slice[1:]))
+	}
+
+	return sumSlice
+}
