@@ -16,3 +16,14 @@ func TestPerimeter(t *testing.T) {
 		t.Errorf("got %.2f want %2.f", got, want)
 	}
 }
+
+func TestArea(t *testing.T) {
+	t.Parallel()
+
+	got := structs.Area(5.0, 7.0)
+	want := 35.0
+
+	if got != want {
+		t.Errorf("got %.2f want %2.f", got, want)
+	}
+}
