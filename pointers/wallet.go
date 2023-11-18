@@ -13,8 +13,8 @@ type Wallet struct {
 	balance Bitcoin
 }
 
-func NewWallet(initBalance Bitcoin) *Wallet {
-	return &Wallet{balance: initBalance}
+func NewWallet(initBalance Bitcoin) Wallet {
+	return Wallet{balance: initBalance}
 }
 
 func (w *Wallet) Deposit(amount Bitcoin) {

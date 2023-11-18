@@ -27,7 +27,7 @@ func TestWallet(t *testing.T) {
 
 		err := wallet.Withdraw(pointers.Bitcoin(10))
 		assertNoError(t, err)
-		assertBalance(t, *wallet, pointers.Bitcoin(10))
+		assertBalance(t, wallet, pointers.Bitcoin(10))
 	})
 
 	t.Run("Wallet cannot withdraw a bigger amount than its balance",
@@ -39,7 +39,7 @@ func TestWallet(t *testing.T) {
 
 			err := wallet.Withdraw(pointers.Bitcoin(100))
 
-			assertBalance(t, *wallet, startingBalance)
+			assertBalance(t, wallet, startingBalance)
 			assertError(t, err, pointers.ErrInsufficientFunds)
 		})
 }
