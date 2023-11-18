@@ -1,6 +1,7 @@
 package pointers_test
 
 import (
+	"errors"
 	"testing"
 
 	"learn-go-with-tests/pointers"
@@ -8,32 +9,6 @@ import (
 
 func TestWallet(t *testing.T) {
 	t.Parallel()
-
-	assertBalance := func(
-		tb testing.TB,
-		wallet pointers.Wallet,
-		want pointers.Bitcoin,
-	) {
-		tb.Helper()
-
-		got := wallet.Balance()
-
-		if got != want {
-			t.Errorf("got %s want %s", got, want)
-		}
-	}
-
-	assertError := func(tb testing.TB, got error, want string) {
-		tb.Helper()
-
-		if got == nil {
-			t.Fatal("wanted an error but did not get one")
-		}
-
-		if got.Error() != want {
-			t.Errorf("got %q want %q", got, want)
-		}
-	}
 
 	t.Run("Wallet deposits a positive amount correctly", func(t *testing.T) {
 		t.Parallel()
@@ -65,6 +40,32 @@ func TestWallet(t *testing.T) {
 			err := wallet.Withdraw(pointers.Bitcoin(100))
 
 			assertBalance(t, *wallet, startingBalance)
-			assertError(t, err, "cannot withdraw, insufficient funds")
+			assertError(t, err, pointers.ErrInsufficientFunds)
 		})
+}
+
+func assertBalance(
+	tb testing.TB,
+	wallet pointers.Wallet,
+	want pointers.Bitcoin,
+) {
+	tb.Helper()
+
+	got := wallet.Balance()
+
+	if got != want {
+		tb.Errorf("got %s want %s", got, want)
+	}
+}
+
+func assertError(tb testing.TB, got, want error) {
+	tb.Helper()
+
+	if got == nil {
+		tb.Fatal("wanted an error but did not get one")
+	}
+
+	if !errors.Is(got, want) {
+		tb.Errorf("got %q want %q", got, want)
+	}
 }
