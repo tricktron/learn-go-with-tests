@@ -9,13 +9,31 @@ import (
 func TestWallet(t *testing.T) {
 	t.Parallel()
 
-	wallet := pointers.Wallet{}
+	t.Run("Wallet deposits a positive amount correctly", func(t *testing.T) {
+		t.Parallel()
 
-	wallet.Deposit(pointers.Bitcoin(10))
-	got := wallet.Balance()
-	want := pointers.Bitcoin(99)
+		wallet := pointers.Wallet{}
 
-	if got != want {
-		t.Errorf("got %s want %s", got, want)
-	}
+		wallet.Deposit(pointers.Bitcoin(10))
+		got := wallet.Balance()
+		want := pointers.Bitcoin(10)
+
+		if got != want {
+			t.Errorf("got %s want %s", got, want)
+		}
+	})
+
+	t.Run("Wallet withdraws a positive amount correctly", func(t *testing.T) {
+		t.Parallel()
+
+		wallet := pointers.NewWallet(pointers.Bitcoin(20))
+
+		wallet.Withdraw(pointers.Bitcoin(10))
+		got := wallet.Balance()
+		want := pointers.Bitcoin(10)
+
+		if got != want {
+			t.Errorf("got %s want %s", got, want)
+		}
+	})
 }
