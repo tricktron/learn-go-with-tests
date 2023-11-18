@@ -23,6 +23,14 @@ func TestWallet(t *testing.T) {
 		}
 	}
 
+	assertError := func(tb testing.TB, err error) {
+		tb.Helper()
+
+		if err == nil {
+			t.Error("wanted an error but did not get one")
+		}
+	}
+
 	t.Run("Wallet deposits a positive amount correctly", func(t *testing.T) {
 		t.Parallel()
 
@@ -38,7 +46,7 @@ func TestWallet(t *testing.T) {
 
 		wallet := pointers.NewWallet(pointers.Bitcoin(20))
 
-		wallet.Withdraw(pointers.Bitcoin(10))
+		wallet.Withdraw(pointers.Bitcoin(10)) //nolint: errcheck
 
 		assertBalance(t, *wallet, pointers.Bitcoin(10))
 	})
@@ -53,9 +61,6 @@ func TestWallet(t *testing.T) {
 			err := wallet.Withdraw(pointers.Bitcoin(100))
 
 			assertBalance(t, *wallet, startingBalance)
-
-			if err == nil {
-				t.Error("wanted an error but didn't get one")
-			}
+			assertError(t, err)
 		})
 }
