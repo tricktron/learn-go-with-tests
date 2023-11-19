@@ -1,6 +1,7 @@
 package maps_test
 
 import (
+	"errors"
 	"testing"
 
 	"learn-go-with-tests/maps"
@@ -24,13 +25,8 @@ func TestSearch(t *testing.T) {
 		t.Parallel()
 
 		_, err := dictionary.Search("unknown")
-		want := "could not find the word you were looking for"
 
-		if err == nil {
-			t.Fatal("expected to get an error")
-		}
-
-		assertStrings(t, err.Error(), want)
+		assertError(t, err, maps.ErrWordNotFound)
 	})
 }
 
@@ -39,5 +35,13 @@ func assertStrings(tb testing.TB, got, want string) {
 
 	if got != want {
 		tb.Errorf("got %q want %q", got, want)
+	}
+}
+
+func assertError(tb testing.TB, got, want error) {
+	tb.Helper()
+
+	if !errors.Is(got, want) {
+		tb.Errorf("got error %q want %q", got, want)
 	}
 }
