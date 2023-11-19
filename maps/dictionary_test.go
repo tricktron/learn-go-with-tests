@@ -9,9 +9,9 @@ import (
 func TestSearch(t *testing.T) {
 	t.Parallel()
 
-	dictionary := map[string]string{"test": "this is just a test"}
+	dictionary := maps.Dictionary{"test": "this is just a test"}
 
-	got := maps.Search(dictionary, "test")
+	got := dictionary.Search("test")
 	want := "this is just a test"
 
 	assertStrings(t, got, want)
