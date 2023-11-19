@@ -14,7 +14,13 @@ func TestSearch(t *testing.T) {
 	got := maps.Search(dictionary, "test")
 	want := "this is just a test"
 
+	assertStrings(t, got, want)
+}
+
+func assertStrings(tb testing.TB, got, want string) {
+	tb.Helper()
+
 	if got != want {
-		t.Errorf("got %q want %q given %q", got, want, "test")
+		tb.Errorf("got %q want %q", got, want)
 	}
 }
