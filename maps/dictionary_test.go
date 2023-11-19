@@ -12,7 +12,7 @@ func TestSearch(t *testing.T) {
 
 	dictionary := maps.Dictionary{"test": "this is just a test"}
 
-	t.Run("Dictionary finds known word", func(t *testing.T) {
+	t.Run("Search finds known word", func(t *testing.T) {
 		t.Parallel()
 
 		got, _ := dictionary.Search("test")
@@ -21,7 +21,7 @@ func TestSearch(t *testing.T) {
 		assertStrings(t, got, want)
 	})
 
-	t.Run("Dictionary throws error for unknown word", func(t *testing.T) {
+	t.Run("Search throws error for unknown word", func(t *testing.T) {
 		t.Parallel()
 
 		_, err := dictionary.Search("unknown")
@@ -33,13 +33,29 @@ func TestSearch(t *testing.T) {
 func TestAdd(t *testing.T) {
 	t.Parallel()
 
-	dictionary := maps.Dictionary{}
-	word := "test"
-	definition := "this is just a test"
+	t.Run("Add adds a new word", func(t *testing.T) {
+		t.Parallel()
+		dictionary := maps.Dictionary{}
+		word := "TDD"
+		definition := "Test-driven development"
 
-	dictionary.Add("test", "this is just a test")
+		//nolint: errcheck
+		dictionary.Add(word, definition)
 
-	assertDefinition(t, dictionary, word, definition)
+		assertDefinition(t, dictionary, word, definition)
+	})
+
+	t.Run("Add throws an error for existing word", func(t *testing.T) {
+		t.Parallel()
+		word := "test"
+		definition := "this is just a test"
+		dictionary := maps.Dictionary{word: definition}
+
+		err := dictionary.Add(word, "new test")
+
+		assertError(t, err, maps.ErrWordExists)
+		assertDefinition(t, dictionary, word, definition)
+	})
 }
 
 func assertStrings(tb testing.TB, got, want string) {
