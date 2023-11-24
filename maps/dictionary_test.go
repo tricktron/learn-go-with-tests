@@ -58,6 +58,19 @@ func TestAdd(t *testing.T) {
 	})
 }
 
+func TestUpdate(t *testing.T) {
+	t.Parallel()
+
+	word := "test"
+	definition := "this is an update test"
+	dictionary := maps.Dictionary{word: definition}
+	newDefinition := "updated"
+
+	dictionary.Update(word, newDefinition)
+
+	assertDefinition(t, dictionary, word, newDefinition)
+}
+
 func assertStrings(tb testing.TB, got, want string) {
 	tb.Helper()
 
