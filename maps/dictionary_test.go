@@ -61,14 +61,29 @@ func TestAdd(t *testing.T) {
 func TestUpdate(t *testing.T) {
 	t.Parallel()
 
-	word := "test"
-	definition := "this is an update test"
-	dictionary := maps.Dictionary{word: definition}
-	newDefinition := "updated"
+	t.Run("Update works with existing word", func(t *testing.T) {
+		t.Parallel()
+		word := "test"
+		definition := "this is an update test"
+		dictionary := maps.Dictionary{word: definition}
+		newDefinition := "updated"
 
-	dictionary.Update(word, newDefinition)
+		err := dictionary.Update(word, newDefinition)
 
-	assertDefinition(t, dictionary, word, newDefinition)
+		assertError(t, err, nil)
+		assertDefinition(t, dictionary, word, newDefinition)
+	})
+
+	t.Run("Update fails with new word", func(t *testing.T) {
+		t.Parallel()
+		word := "newWord"
+		dictionary := maps.Dictionary{}
+		newDefinition := "updated"
+
+		err := dictionary.Update(word, newDefinition)
+
+		assertError(t, err, maps.ErrWordDoesNotExist)
+	})
 }
 
 func assertStrings(tb testing.TB, got, want string) {

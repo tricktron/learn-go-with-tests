@@ -1,13 +1,16 @@
 package maps
 
+import "errors"
+
 type (
 	Dictionary      map[string]string
 	DictionaryError string
 )
 
 const (
-	ErrWordNotFound = DictionaryError("could not find the word you were looking for")
-	ErrWordExists   = DictionaryError("cannot add word because it already exists")
+	ErrWordNotFound     = DictionaryError("could not find the word you were looking for")
+	ErrWordExists       = DictionaryError("cannot add word because it already exists")
+	ErrWordDoesNotExist = DictionaryError("cannot update word because it does not exist")
 )
 
 func (e DictionaryError) Error() string {
@@ -36,6 +39,14 @@ func (d Dictionary) Add(word, definition string) error {
 	return nil
 }
 
-func (d Dictionary) Update(word, newDefinition string) {
+func (d Dictionary) Update(word, newDefinition string) error {
+	_, err := d.Search(word)
+
+	if errors.Is(err, ErrWordNotFound) {
+		return ErrWordDoesNotExist
+	}
+
 	d[word] = newDefinition
+
+	return nil
 }
