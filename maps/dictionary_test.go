@@ -39,9 +39,9 @@ func TestAdd(t *testing.T) {
 		word := "TDD"
 		definition := "Test-driven development"
 
-		//nolint: errcheck
-		dictionary.Add(word, definition)
+		err := dictionary.Add(word, definition)
 
+		assertError(t, err, nil)
 		assertDefinition(t, dictionary, word, definition)
 	})
 
