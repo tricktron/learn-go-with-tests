@@ -89,7 +89,7 @@ func TestUpdate(t *testing.T) {
 func TestDelete(t *testing.T) {
 	t.Parallel()
 
-	word := "test"
+	word := "toBeDeleted"
 	dictionary := maps.Dictionary{word: "test definition"}
 
 	dictionary.Delete(word)
