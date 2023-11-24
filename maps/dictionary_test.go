@@ -86,6 +86,20 @@ func TestUpdate(t *testing.T) {
 	})
 }
 
+func TestDelete(t *testing.T) {
+	t.Parallel()
+
+	word := "test"
+	dictionary := maps.Dictionary{word: "test definition"}
+
+	dictionary.Delete(word)
+
+	_, err := dictionary.Search(word)
+	if !errors.Is(err, maps.ErrWordNotFound) {
+		t.Errorf("Expected %q to be deleted", word)
+	}
+}
+
 func assertStrings(tb testing.TB, got, want string) {
 	tb.Helper()
 
