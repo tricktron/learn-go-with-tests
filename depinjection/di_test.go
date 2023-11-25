@@ -1,17 +1,15 @@
-package depinjection_test
+package main
 
 import (
 	"bytes"
 	"testing"
-
-	"learn-go-with-tests/depinjection"
 )
 
 func TestGreet(t *testing.T) {
 	t.Parallel()
 
 	buffer := bytes.Buffer{}
-	depinjection.Greet(&buffer, "Chris")
+	Greet(&buffer, "Chris")
 
 	got := buffer.String()
 	want := "Hello, Chris"
