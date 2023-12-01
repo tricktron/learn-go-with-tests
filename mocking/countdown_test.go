@@ -1,10 +1,8 @@
-package mocking_test
+package main
 
 import (
 	"bytes"
 	"testing"
-
-	"learn-go-with-tests/mocking"
 )
 
 func TestCountdown(t *testing.T) {
@@ -12,7 +10,7 @@ func TestCountdown(t *testing.T) {
 
 	buffer := &bytes.Buffer{}
 
-	mocking.Countdown(buffer)
+	Countdown(buffer)
 
 	got := buffer.String()
 	want := "3"
