@@ -55,7 +55,7 @@ func TestConfigurableSleeper(t *testing.T) {
 	t.Parallel()
 
 	sleepTime := 5 * time.Second
-	spyTime := &SpyTime{durationSlept: 0}
+	spyTime := &SpyTime{durationSlept: 0 * time.Second}
 	sleeper := ConfigurableSleeper{sleepTime, spyTime.Sleep}
 
 	sleeper.Sleep()
