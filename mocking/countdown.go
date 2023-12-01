@@ -12,11 +12,20 @@ const (
 	countdownStart = 3
 )
 
+type ConfigurableSleeper struct {
+	duration time.Duration
+	sleep    func(time.Duration)
+}
+
 type Sleeper interface {
 	Sleep()
 }
 
 type DefaultSleeper struct{}
+
+func (c *ConfigurableSleeper) Sleep() {
+	c.sleep(c.duration)
+}
 
 func (d *DefaultSleeper) Sleep() {
 	time.Sleep(1 * time.Second)
