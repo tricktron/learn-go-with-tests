@@ -13,7 +13,11 @@ func TestRacer(t *testing.T) {
 	t.Parallel()
 
 	slowServer := makeDelayedServer(20 * time.Millisecond)
+	defer slowServer.Close()
+
 	fastServer := makeDelayedServer(0 * time.Millisecond)
+	defer fastServer.Close()
+
 	slowURL := slowServer.URL
 	fastURL := fastServer.URL
 	want := fastURL
@@ -23,9 +27,6 @@ func TestRacer(t *testing.T) {
 	if got != want {
 		t.Errorf("got %q, want %q", got, want)
 	}
-
-	slowServer.Close()
-	fastServer.Close()
 }
 
 func makeDelayedServer(delay time.Duration) *httptest.Server {
