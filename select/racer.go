@@ -6,21 +6,20 @@ import (
 )
 
 func Racer(url1, url2 string) string {
-	startURL1 := time.Now()
-
-	http.Get(url1) //nolint: errcheck,gosec,bodyclose,noctx
-
-	url1Duration := time.Since(startURL1)
-
-	startURL2 := time.Now()
-
-	http.Get(url2) //nolint: errcheck,gosec,bodyclose,noctx
-
-	url2Duration := time.Since(startURL2)
+	url1Duration := measureResponseTime(url1)
+	url2Duration := measureResponseTime(url2)
 
 	if url1Duration < url2Duration {
 		return url1
 	}
 
 	return url2
+}
+
+func measureResponseTime(url string) time.Duration {
+	start := time.Now()
+
+	http.Get(url) //nolint: errcheck,gosec,bodyclose,noctx
+
+	return time.Since(start)
 }
