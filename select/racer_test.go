@@ -41,7 +41,7 @@ func TestRacer(t *testing.T) {
 
 			timeout := 20 * time.Millisecond
 			serverA := makeDelayedServer(25 * time.Millisecond)
-			serverB := makeDelayedServer(12 * time.Millisecond)
+			serverB := makeDelayedServer(30 * time.Millisecond)
 			defer serverA.Close()
 			defer serverB.Close()
 
