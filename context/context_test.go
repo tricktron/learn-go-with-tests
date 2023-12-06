@@ -16,7 +16,6 @@ var errNotImplemented = errors.New("not implemented")
 
 type SpyStore struct {
 	response string
-	t        *testing.T
 }
 
 type SpyResponseWriter struct {
@@ -74,7 +73,7 @@ func TestServer(t *testing.T) {
 	t.Run("request without cancelling returns data from store", func(t *testing.T) {
 		t.Parallel()
 		data := "hello, world"
-		store := &SpyStore{response: data, t: t}
+		store := &SpyStore{response: data}
 		server := server_context.Server(store)
 
 		request := httptest.NewRequest(http.MethodGet, "/", nil)
@@ -90,7 +89,7 @@ func TestServer(t *testing.T) {
 	t.Run("request with cancelling does not fetch from store", func(t *testing.T) {
 		t.Parallel()
 		data := "hello, world"
-		store := &SpyStore{response: data, t: t}
+		store := &SpyStore{response: data}
 		server := server_context.Server(store)
 
 		request := httptest.NewRequest(http.MethodGet, "/", nil)
