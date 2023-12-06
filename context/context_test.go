@@ -12,6 +12,8 @@ import (
 	server_context "learn-go-with-tests/context"
 )
 
+var errNotImplemented = errors.New("not implemented")
+
 type SpyStore struct {
 	response string
 	t        *testing.T
@@ -30,7 +32,7 @@ func (s *SpyResponseWriter) Header() http.Header {
 func (s *SpyResponseWriter) Write([]byte) (int, error) {
 	s.written = true
 
-	return 0, errors.New("not implemented") //nolint: goerr113
+	return 0, errNotImplemented
 }
 
 func (s *SpyResponseWriter) WriteHeader(_ int) {
