@@ -29,8 +29,7 @@ func ConfigurableRacer(url1, url2 string, timeout time.Duration) (string, error)
 func ping(url string) chan struct{} {
 	channel := make(chan struct{})
 	go func() {
-		res, _ := http.Get(url) //nolint: gosec,noctx
-		res.Body.Close()
+		http.Get(url) //nolint: gosec,noctx,errcheck,bodyclose
 		close(channel)
 	}()
 
