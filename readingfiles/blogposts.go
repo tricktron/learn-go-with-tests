@@ -6,7 +6,7 @@ import (
 
 type Post struct{}
 
-func NewPostsFromFS(fileSystem fs.FS) []Post {
+func NewPostsFromFS(fileSystem fs.FS) ([]Post, error) {
 	dir, _ := fs.ReadDir(fileSystem, ".")
 
 	var posts []Post //nolint: prealloc
@@ -14,5 +14,5 @@ func NewPostsFromFS(fileSystem fs.FS) []Post {
 		posts = append(posts, Post{})
 	}
 
-	return posts
+	return posts, nil
 }

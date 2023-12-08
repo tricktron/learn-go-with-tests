@@ -1,6 +1,8 @@
 package blogposts_test
 
 import (
+	"errors"
+	"io/fs"
 	"testing"
 	"testing/fstest"
 
@@ -15,9 +17,18 @@ func TestNewBlogPosts(t *testing.T) {
 		"hello world2.md": {Data: []byte("hola")},
 	}
 
-	posts := blogposts.NewPostsFromFS(inMemoryFS)
+	posts, err := blogposts.NewPostsFromFS(inMemoryFS)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	if len(posts) != len(inMemoryFS) {
 		t.Errorf("got %d posts, wanted %d posts", len(posts), len(inMemoryFS))
 	}
+}
+
+type StubFailingFS struct{}
+
+func (s StubFailingFS) Open(_ string) (fs.File, error) {
+	return nil, errors.New("oh no, i always fail") //nolint: goerr113
 }
