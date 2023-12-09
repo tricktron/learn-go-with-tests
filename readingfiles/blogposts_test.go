@@ -13,11 +13,17 @@ import (
 func TestNewBlogPosts(t *testing.T) {
 	t.Parallel()
 
+	const (
+		firstBody = `Title: Post 1
+Description: Description 1`
+		secondBody = `Title: Post 2
+Description: Description 2`
+	)
+
 	inMemoryFS := fstest.MapFS{
-		"hello world.md":  {Data: []byte("Title: Post 1")},
-		"hello world2.md": {Data: []byte("Title: Post 2")},
+		"hello world.md":  {Data: []byte(firstBody)},
+		"hello world2.md": {Data: []byte(secondBody)},
 	}
-	want := blogposts.Post{Title: "Post 1"}
 
 	posts, err := blogposts.NewPostsFromFS(inMemoryFS)
 	if err != nil {
@@ -28,9 +34,10 @@ func TestNewBlogPosts(t *testing.T) {
 		t.Errorf("got %d posts, wanted %d posts", len(posts), len(inMemoryFS))
 	}
 
-	got := posts[0]
-
-	assertPost(t, got, want)
+	assertPost(t, posts[0], blogposts.Post{
+		Title:       "Post 1",
+		Description: "Description 1",
+	})
 }
 
 type StubFailingFS struct{}
