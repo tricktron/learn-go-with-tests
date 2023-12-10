@@ -61,24 +61,23 @@ func newPost(postFile io.Reader) (Post, error) {
 		return strings.TrimPrefix(scanner.Text(), tagName)
 	}
 
-	title := readMetaLine(titleSeparator)
-	description := readMetaLine(descriptionSeparator)
-	tags := strings.Split(readMetaLine(tagsSeparator), ", ")
+	readBody := func() string {
+		scanner.Scan()
 
-	scanner.Scan()
+		buf := bytes.Buffer{}
 
-	buf := bytes.Buffer{}
-	for scanner.Scan() {
-		fmt.Fprintln(&buf, scanner.Text())
+		for scanner.Scan() {
+			fmt.Fprintln(&buf, scanner.Text())
+		}
+
+		return strings.TrimSuffix(buf.String(), "\n")
 	}
 
-	body := strings.TrimSuffix(buf.String(), "\n")
-
 	return Post{
-			Title:       title,
-			Description: description,
-			Tags:        tags,
-			Body:        body,
+			Title:       readMetaLine(titleSeparator),
+			Description: readMetaLine(descriptionSeparator),
+			Tags:        strings.Split(readMetaLine(tagsSeparator), ", "),
+			Body:        readBody(),
 		},
 		nil
 }
