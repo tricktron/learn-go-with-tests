@@ -1,11 +1,11 @@
-package app_test
+package server_test
 
 import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
 
-	app "learn-go-with-tests/build-an-application"
+	"learn-go-with-tests/build-an-application/server"
 )
 
 func TestGetPlayers(t *testing.T) {
@@ -16,7 +16,7 @@ func TestGetPlayers(t *testing.T) {
 		request, _ := http.NewRequest(http.MethodGet, "/players/Pepper", nil)
 		response := httptest.NewRecorder()
 
-		app.PlayerServer(response, request)
+		server.PlayerServer(response, request)
 
 		got := response.Body.String()
 		want := "20"
