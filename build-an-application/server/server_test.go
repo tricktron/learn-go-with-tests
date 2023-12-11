@@ -27,6 +27,7 @@ func TestGetPlayers(t *testing.T) {
 
 		server.ServeHTTP(response, request)
 
+		assertStatusCode(t, response.Code, http.StatusOK)
 		assertResponseBody(t, response.Body.String(), "20")
 	})
 
@@ -37,6 +38,7 @@ func TestGetPlayers(t *testing.T) {
 
 		server.ServeHTTP(response, request)
 
+		assertStatusCode(t, response.Code, http.StatusOK)
 		assertResponseBody(t, response.Body.String(), "10")
 	})
 
@@ -47,12 +49,26 @@ func TestGetPlayers(t *testing.T) {
 
 		server.ServeHTTP(response, request)
 
-		got := response.Code
-		want := http.StatusNotFound
+		assertStatusCode(t, response.Code, http.StatusNotFound)
+	})
+}
 
-		if got != want {
-			t.Errorf("got status %d want %d", got, want)
-		}
+func TestStoreWins(t *testing.T) {
+	t.Parallel()
+
+	store := StubPlayerStore{
+		map[string]int{},
+	}
+	server := &server.PlayerServer{&store}
+
+	t.Run("it returns accepted on POST", func(t *testing.T) {
+		t.Parallel()
+		request, _ := http.NewRequest(http.MethodPost, "/players/Pepper", nil) //nolint: noctx
+		response := httptest.NewRecorder()
+
+		server.ServeHTTP(response, request)
+
+		assertStatusCode(t, response.Code, http.StatusAccepted)
 	})
 }
 
@@ -68,6 +84,14 @@ func assertResponseBody(tb testing.TB, got, want string) {
 
 	if got != want {
 		tb.Errorf("response body is wrong, got %q want %q", got, want)
+	}
+}
+
+func assertStatusCode(tb testing.TB, got, want int) {
+	tb.Helper()
+
+	if got != want {
+		tb.Errorf("did not get correct status, got %d want %d", got, want)
 	}
 }
 
