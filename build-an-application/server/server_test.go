@@ -13,10 +13,11 @@ func TestGetPlayers(t *testing.T) {
 	t.Parallel()
 
 	store := StubPlayerStore{
-		map[string]int{
+		scores: map[string]int{
 			"Pepper": 20,
 			"Floyd":  10,
 		},
+		winCalls: []string{},
 	}
 	server := &server.PlayerServer{&store}
 
@@ -57,7 +58,8 @@ func TestStoreWins(t *testing.T) {
 	t.Parallel()
 
 	store := StubPlayerStore{
-		map[string]int{},
+		scores:   map[string]int{},
+		winCalls: []string{},
 	}
 	server := &server.PlayerServer{&store}
 
@@ -69,6 +71,10 @@ func TestStoreWins(t *testing.T) {
 		server.ServeHTTP(response, request)
 
 		assertStatusCode(t, response.Code, http.StatusAccepted)
+
+		if len(store.winCalls) != 1 {
+			t.Errorf("got %d calls to RecordWin want %d", len(store.winCalls), 1)
+		}
 	})
 }
 
@@ -96,11 +102,16 @@ func assertStatusCode(tb testing.TB, got, want int) {
 }
 
 type StubPlayerStore struct {
-	scores map[string]int
+	scores   map[string]int
+	winCalls []string
 }
 
 func (s *StubPlayerStore) GetPlayerScore(name string) int {
 	score := s.scores[name]
 
 	return score
+}
+
+func (s *StubPlayerStore) RecordWin(name string) {
+	s.winCalls = append(s.winCalls, name)
 }

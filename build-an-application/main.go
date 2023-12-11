@@ -13,6 +13,8 @@ func (i *InMemoryPlayerStore) GetPlayerScore(_ string) int {
 	return 123 //nolint: gomnd
 }
 
+func (i *InMemoryPlayerStore) RecordWin(_ string) {}
+
 func main() {
 	server := &server.PlayerServer{Store: &InMemoryPlayerStore{}}
 	log.Fatal(http.ListenAndServe(":5000", server)) //nolint: gosec
