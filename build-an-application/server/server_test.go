@@ -11,12 +11,21 @@ import (
 
 func TestGetPlayers(t *testing.T) {
 	t.Parallel()
+
+	store := StubPlayerStore{
+		map[string]int{
+			"Pepper": 20,
+			"Floyd":  10,
+		},
+	}
+	server := &server.PlayerServer{&store}
+
 	t.Run("returns Pepper's score", func(t *testing.T) {
 		t.Parallel()
 		request := newGetScoreRequest("Pepper")
 		response := httptest.NewRecorder()
 
-		server.PlayerServer(response, request)
+		server.ServeHTTP(response, request)
 
 		assertResponseBody(t, response.Body.String(), "20")
 	})
@@ -26,7 +35,7 @@ func TestGetPlayers(t *testing.T) {
 		request := newGetScoreRequest("Floyd")
 		response := httptest.NewRecorder()
 
-		server.PlayerServer(response, request)
+		server.ServeHTTP(response, request)
 
 		assertResponseBody(t, response.Body.String(), "10")
 	})
@@ -45,4 +54,14 @@ func assertResponseBody(tb testing.TB, got, want string) {
 	if got != want {
 		tb.Errorf("response body is wrong, got %q want %q", got, want)
 	}
+}
+
+type StubPlayerStore struct {
+	scores map[string]int
+}
+
+func (s *StubPlayerStore) GetPlayerScore(name string) int {
+	score := s.scores[name]
+
+	return score
 }
