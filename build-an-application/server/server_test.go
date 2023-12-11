@@ -65,7 +65,8 @@ func TestStoreWins(t *testing.T) {
 
 	t.Run("it returns accepted on POST", func(t *testing.T) {
 		t.Parallel()
-		request, _ := http.NewRequest(http.MethodPost, "/players/Pepper", nil) //nolint: noctx
+		playerName := "Pepper"
+		request := newPostWinRequest(playerName)
 		response := httptest.NewRecorder()
 
 		server.ServeHTTP(response, request)
@@ -75,12 +76,26 @@ func TestStoreWins(t *testing.T) {
 		if len(store.winCalls) != 1 {
 			t.Errorf("got %d calls to RecordWin want %d", len(store.winCalls), 1)
 		}
+
+		if store.winCalls[0] != playerName {
+			t.Errorf(
+				"did not store correct winner, got %q want %q",
+				store.winCalls[0],
+				playerName,
+			)
+		}
 	})
 }
 
 func newGetScoreRequest(name string) *http.Request {
-	//nolint: noctx
 	req, _ := http.NewRequest(http.MethodGet, fmt.Sprintf("/players/%s", name), nil)
+
+	return req
+}
+
+func newPostWinRequest(name string) *http.Request {
+	//nolint: noctx
+	req, _ := http.NewRequest(http.MethodPost, fmt.Sprintf("/players/%s", name), nil)
 
 	return req
 }
