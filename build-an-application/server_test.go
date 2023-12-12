@@ -1,12 +1,10 @@
-package server_test
+package main
 
 import (
 	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"testing"
-
-	"learn-go-with-tests/build-an-application/server"
 )
 
 func TestGetPlayers(t *testing.T) {
@@ -19,7 +17,7 @@ func TestGetPlayers(t *testing.T) {
 		},
 		winCalls: []string{},
 	}
-	server := &server.PlayerServer{&store}
+	server := &PlayerServer{&store}
 
 	t.Run("returns Pepper's score", func(t *testing.T) {
 		t.Parallel()
@@ -61,7 +59,7 @@ func TestStoreWins(t *testing.T) {
 		scores:   map[string]int{},
 		winCalls: []string{},
 	}
-	server := &server.PlayerServer{&store}
+	server := &PlayerServer{&store}
 
 	t.Run("it returns accepted on POST", func(t *testing.T) {
 		t.Parallel()
@@ -93,7 +91,7 @@ func newGetScoreRequest(name string) *http.Request {
 	return req
 }
 
-func newPostWinRequest(name string) *http.Request {
+func newPostWinRequest(name string) *http.Request { //nolint: unparam
 	//nolint: noctx
 	req, _ := http.NewRequest(http.MethodPost, fmt.Sprintf("/players/%s", name), nil)
 
