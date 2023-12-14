@@ -10,6 +10,7 @@ import (
 type PlayerStore interface {
 	GetPlayerScore(name string) int
 	RecordWin(name string)
+	GetLeague() []Player
 }
 
 type PlayerServer struct {
@@ -37,14 +38,8 @@ func NewPlayerServer(store PlayerStore) *PlayerServer {
 }
 
 func (p *PlayerServer) leagueHandler(writer http.ResponseWriter, _ *http.Request) {
-	json.NewEncoder(writer).Encode(p.getLeagueTable()) //nolint: errcheck,errchkjson
+	json.NewEncoder(writer).Encode(p.Store.GetLeague()) //nolint: errcheck,errchkjson
 	writer.WriteHeader(http.StatusOK)
-}
-
-func (p *PlayerServer) getLeagueTable() []Player {
-	return []Player{
-		{"Chris", 20},
-	}
 }
 
 func (p *PlayerServer) playersHandler(writer http.ResponseWriter, req *http.Request) {
