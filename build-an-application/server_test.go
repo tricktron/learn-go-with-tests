@@ -17,7 +17,7 @@ func TestGetPlayers(t *testing.T) {
 		},
 		winCalls: []string{},
 	}
-	server := &PlayerServer{&store}
+	server := NewPlayerServer(&store)
 
 	t.Run("returns Pepper's score", func(t *testing.T) {
 		t.Parallel()
@@ -59,7 +59,7 @@ func TestStoreWins(t *testing.T) {
 		scores:   map[string]int{},
 		winCalls: []string{},
 	}
-	server := &PlayerServer{&store}
+	server := NewPlayerServer(&store)
 
 	t.Run("it returns accepted on POST", func(t *testing.T) {
 		t.Parallel()
@@ -92,7 +92,7 @@ func TestLeague(t *testing.T) {
 		scores:   map[string]int{},
 		winCalls: []string{},
 	}
-	server := &PlayerServer{&store}
+	server := NewPlayerServer(&store)
 
 	t.Run("it returns 200 on /league", func(t *testing.T) {
 		t.Parallel()

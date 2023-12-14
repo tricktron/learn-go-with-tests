@@ -10,7 +10,7 @@ func TestRecordingWinsAndRetrieveThem(t *testing.T) {
 	t.Parallel()
 
 	store := NewInMemoryPlayerStore()
-	server := PlayerServer{store}
+	server := NewPlayerServer(store)
 	playerName := "Pepper"
 
 	server.ServeHTTP(httptest.NewRecorder(), newPostWinRequest(playerName))
