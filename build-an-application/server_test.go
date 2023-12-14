@@ -125,7 +125,7 @@ func newGetScoreRequest(name string) *http.Request {
 	return req
 }
 
-func newPostWinRequest(name string) *http.Request { //nolint: unparam
+func newPostWinRequest(name string) *http.Request {
 	//nolint: noctx
 	req, _ := http.NewRequest(http.MethodPost, fmt.Sprintf("/players/%s", name), nil)
 
