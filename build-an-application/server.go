@@ -38,8 +38,8 @@ func NewPlayerServer(store PlayerStore) *PlayerServer {
 }
 
 func (p *PlayerServer) leagueHandler(writer http.ResponseWriter, _ *http.Request) {
+	writer.Header().Set("content-type", "application/json")
 	json.NewEncoder(writer).Encode(p.Store.GetLeague()) //nolint: errcheck,errchkjson
-	writer.WriteHeader(http.StatusOK)
 }
 
 func (p *PlayerServer) playersHandler(writer http.ResponseWriter, req *http.Request) {
