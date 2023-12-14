@@ -23,6 +23,8 @@ type Player struct {
 	Wins int
 }
 
+const jsonContentType = "application/json"
+
 func NewPlayerServer(store PlayerStore) *PlayerServer {
 	playerServer := new(PlayerServer)
 
@@ -38,7 +40,7 @@ func NewPlayerServer(store PlayerStore) *PlayerServer {
 }
 
 func (p *PlayerServer) leagueHandler(writer http.ResponseWriter, _ *http.Request) {
-	writer.Header().Set("content-type", "application/json")
+	writer.Header().Set("content-type", jsonContentType)
 	json.NewEncoder(writer).Encode(p.Store.GetLeague()) //nolint: errcheck,errchkjson
 }
 
