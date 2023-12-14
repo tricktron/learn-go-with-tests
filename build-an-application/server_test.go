@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"reflect"
@@ -106,26 +107,14 @@ func TestLeague(t *testing.T) {
 			league:   wantedLeague,
 		}
 		server := NewPlayerServer(&store)
-		request, _ := http.NewRequest(http.MethodGet, "/league", nil) //nolint: noctx
+		request := newLeagueRequest()
 		response := httptest.NewRecorder()
 
 		server.ServeHTTP(response, request)
-
-		var got []Player
-
-		err := json.NewDecoder(response.Body).Decode(&got)
-		if err != nil {
-			t.Fatalf(
-				"Unable to parse response from server %q into slice of Player '%v'",
-				response.Body,
-				err,
-			)
-		}
+		got := getLeagueFromResponse(t, response.Body)
 
 		assertStatusCode(t, response.Code, http.StatusOK)
-		if !reflect.DeepEqual(got, wantedLeague) {
-			t.Errorf("got %v want %v", got, wantedLeague)
-		}
+		assertLeague(t, got, wantedLeague)
 	})
 }
 
@@ -142,6 +131,28 @@ func newPostWinRequest(name string) *http.Request { //nolint: unparam
 	return req
 }
 
+func newLeagueRequest() *http.Request {
+	//nolint: noctx
+	req, _ := http.NewRequest(http.MethodGet, "/league", nil)
+
+	return req
+}
+
+func getLeagueFromResponse(tb testing.TB, body io.Reader) (league []Player) { //nolint: nonamedreturns
+	tb.Helper()
+
+	err := json.NewDecoder(body).Decode(&league)
+	if err != nil {
+		tb.Fatalf(
+			"Unable to parse response from server %q into slice of Player '%v'",
+			body,
+			err,
+		)
+	}
+
+	return
+}
+
 func assertResponseBody(tb testing.TB, got, want string) {
 	tb.Helper()
 
@@ -155,6 +166,14 @@ func assertStatusCode(tb testing.TB, got, want int) {
 
 	if got != want {
 		tb.Errorf("did not get correct status, got %d want %d", got, want)
+	}
+}
+
+func assertLeague(tb testing.TB, got, want []Player) {
+	tb.Helper()
+
+	if !reflect.DeepEqual(got, want) {
+		tb.Errorf("got %v want %v", got, want)
 	}
 }
 
