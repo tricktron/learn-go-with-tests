@@ -15,15 +15,25 @@ type PlayerServer struct {
 	Store PlayerStore
 }
 
-func (p *PlayerServer) ServeHTTP(writer http.ResponseWriter, r *http.Request) {
-	playerName := strings.TrimPrefix(r.URL.Path, "/players/")
+func (p *PlayerServer) ServeHTTP(writer http.ResponseWriter, req *http.Request) {
+	router := http.NewServeMux()
+	router.Handle("/league", http.HandlerFunc(
+		func(w http.ResponseWriter, _ *http.Request) {
+			w.WriteHeader(http.StatusOK)
+		}))
 
-	switch r.Method {
-	case http.MethodPost:
-		p.processWin(writer, playerName)
-	case http.MethodGet:
-		p.showScore(writer, playerName)
-	}
+	router.Handle("/players/", http.HandlerFunc(
+		func(_ http.ResponseWriter, req *http.Request) {
+			playerName := strings.TrimPrefix(req.URL.Path, "/players/")
+
+			switch req.Method {
+			case http.MethodPost:
+				p.processWin(writer, playerName)
+			case http.MethodGet:
+				p.showScore(writer, playerName)
+			}
+		}))
+	router.ServeHTTP(writer, req)
 }
 
 func (p *PlayerServer) showScore(writer http.ResponseWriter, playerName string) {

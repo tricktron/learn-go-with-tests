@@ -85,6 +85,27 @@ func TestStoreWins(t *testing.T) {
 	})
 }
 
+func TestLeague(t *testing.T) {
+	t.Parallel()
+
+	store := StubPlayerStore{
+		scores:   map[string]int{},
+		winCalls: []string{},
+	}
+	server := &PlayerServer{&store}
+
+	t.Run("it returns 200 on /league", func(t *testing.T) {
+		t.Parallel()
+
+		request, _ := http.NewRequest(http.MethodGet, "/league", nil) //nolint: noctx
+		response := httptest.NewRecorder()
+
+		server.ServeHTTP(response, request)
+
+		assertStatusCode(t, response.Code, http.StatusOK)
+	})
+}
+
 func newGetScoreRequest(name string) *http.Request {
 	req, _ := http.NewRequest(http.MethodGet, fmt.Sprintf("/players/%s", name), nil)
 
