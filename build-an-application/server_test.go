@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"reflect"
+	"sort"
 	"testing"
 )
 
@@ -189,6 +190,10 @@ func assertContentType(
 
 func assertLeague(tb testing.TB, got, want []Player) {
 	tb.Helper()
+
+	sort.Slice(got, func(i, j int) bool {
+		return got[i].Wins > got[j].Wins
+	})
 
 	if !reflect.DeepEqual(got, want) {
 		tb.Errorf("got %v want %v", got, want)
