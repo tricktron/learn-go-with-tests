@@ -15,5 +15,5 @@ func GreetSpecification(tb testing.TB, greeter Greeter) {
 
 	got, err := greeter.Greet()
 	assert.NoError(tb, err)
-	assert.Equal(tb, got, "Hello World")
+	assert.Equal(tb, got, "Hello world")
 }

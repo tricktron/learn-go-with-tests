@@ -19,7 +19,7 @@ func TestGreeterServer(t *testing.T) {
 	req := testcontainers.ContainerRequest{
 		FromDockerfile: testcontainers.FromDockerfile{
 			Context:       "../../..",
-			Dockerfile:    "./cmd/httpserver/Dockerfile",
+			Dockerfile:    "./go-specs-greet/cmd/httpserver/Dockerfile",
 			PrintBuildLog: true,
 		},
 		ExposedPorts: []string{"8080:8080"},
