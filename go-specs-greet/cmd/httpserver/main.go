@@ -1,15 +1,14 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
+
+	go_specs_greet "learn-go-with-tests/go-specs-greet"
 )
 
 func main() {
-	handler := http.HandlerFunc(func(writer http.ResponseWriter, _ *http.Request) {
-		fmt.Fprint(writer, "Hello world")
-	})
+	handler := http.HandlerFunc(go_specs_greet.Handler)
 	if err := http.ListenAndServe(":8080", handler); err != nil { //nolint:gosec
 		log.Fatal(err)
 	}
