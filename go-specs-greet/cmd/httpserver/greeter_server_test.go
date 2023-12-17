@@ -1,23 +1,27 @@
 package main_test
 
+//nolint: goimports
 import (
 	"context"
 	"testing"
 
-	go_specs_greet "learn-go-with-tests/go-specs-greet"
-	"learn-go-with-tests/go-specs-greet/specifications"
-
 	"github.com/alecthomas/assert/v2"
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/wait"
+	go_specs_greet "learn-go-with-tests/go-specs-greet"
+	"learn-go-with-tests/go-specs-greet/specifications"
 )
 
 func TestGreeterServer(t *testing.T) {
 	t.Parallel()
 
+	if testing.Short() {
+		t.Skip()
+	}
+
 	ctx := context.Background()
-	req := testcontainers.ContainerRequest{
-		FromDockerfile: testcontainers.FromDockerfile{
+	req := testcontainers.ContainerRequest{ //nolint: exhaustruct
+		FromDockerfile: testcontainers.FromDockerfile{ //nolint: exhaustruct
 			Context:       "../../..",
 			Dockerfile:    "./go-specs-greet/cmd/httpserver/Dockerfile",
 			PrintBuildLog: true,
@@ -27,7 +31,7 @@ func TestGreeterServer(t *testing.T) {
 	}
 	container, err := testcontainers.GenericContainer(
 		ctx,
-		testcontainers.GenericContainerRequest{
+		testcontainers.GenericContainerRequest{ //nolint: exhaustruct
 			ContainerRequest: req,
 			Started:          true,
 		})

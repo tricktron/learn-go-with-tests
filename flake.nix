@@ -43,12 +43,13 @@
                 pname        = "learn-go-with-tests";
                 version      = "1.0.0";
                 src          = ./.;
-                vendorSha256 = null;
+                vendorSha256 = "sha256-4QzMYNERkMR6yW/MsxAoHWISFsuy3pY5CpD1esABwrE=";
                 preCheck     = 
                 ''
                     HOME=$TMPDIR
                     golangci-lint run --enable-all
                 '';
+                checkFlags = "-short";
             };
         });
 
