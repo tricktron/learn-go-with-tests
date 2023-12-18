@@ -1,17 +1,17 @@
 package main_test
 
-//nolint: goimports
 import (
 	"context"
 	"net/http"
 	"testing"
 	"time"
 
+	"learn-go-with-tests/go-specs-greet/adapters/httpserver"
+	"learn-go-with-tests/go-specs-greet/specifications"
+
 	"github.com/alecthomas/assert/v2"
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/wait"
-	go_specs_greet "learn-go-with-tests/go-specs-greet"
-	"learn-go-with-tests/go-specs-greet/specifications"
 )
 
 func TestGreeterServer(t *testing.T) {
@@ -49,6 +49,6 @@ func TestGreeterServer(t *testing.T) {
 		Jar:           nil,
 		CheckRedirect: nil,
 	}
-	driver := go_specs_greet.Driver{BaseURL: "http://localhost:8080", Client: &client}
+	driver := httpserver.Driver{BaseURL: "http://localhost:8080", Client: &client}
 	specifications.GreetSpecification(t, driver)
 }

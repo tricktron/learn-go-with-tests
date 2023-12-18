@@ -4,11 +4,11 @@ import (
 	"log"
 	"net/http"
 
-	go_specs_greet "learn-go-with-tests/go-specs-greet"
+	"learn-go-with-tests/go-specs-greet/adapters/httpserver"
 )
 
 func main() {
-	handler := http.HandlerFunc(go_specs_greet.Handler)
+	handler := http.HandlerFunc(httpserver.Handler)
 	if err := http.ListenAndServe(":8080", handler); err != nil { //nolint:gosec
 		log.Fatal(err)
 	}
