@@ -1,4 +1,4 @@
-package go_specs_greet //nolint:revive,stylecheck
+package interactions
 
 import "fmt"
 
