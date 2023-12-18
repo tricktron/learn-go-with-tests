@@ -10,8 +10,8 @@ type Driver struct {
 	Client  *http.Client
 }
 
-func (d Driver) Greet() (string, error) {
-	res, err := d.Client.Get(d.BaseURL + "/greet") //nolint: noctx
+func (d Driver) Greet(name string) (string, error) {
+	res, err := d.Client.Get(d.BaseURL + "/greet?name=" + name) //nolint: noctx
 	if err != nil {
 		return "", err //nolint: wrapcheck
 	}
